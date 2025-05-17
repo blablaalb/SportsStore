@@ -9,15 +9,17 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" asp-href-include="lib/bootstrap/css/*.css" />
+    <link rel="stylesheet" asp-href-include="lib/fontawesome/css/*.css" />
     <title>Sports Store</title>
 </head>
 <body>
     <div class="navbar navbar-dark bg-dark" role="navigation">
         <a class="navbar-brand" href="#">SPORTS STORE</a>
+        <div class="float-start">@await Component.InvokeAsync("CartSummary")</div>
     </div>
     <div class="row">
         <div id="categories" class="col-3">
-            Put something useful here later
+            @await Component.InvokeAsync("NavigationMenu")
         </div>
         <div class="col-8">
             @RenderBody()

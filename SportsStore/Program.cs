@@ -1,13 +1,19 @@
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using SportsStore.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvc();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
 //builder.Services.AddTransient<IProductRepository, FakeProductRepository>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddTransient<IProductRepository, EFProductRepository>();
+builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<IOrderRepository, EFOrderRepository>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -17,16 +23,28 @@ if (app.Environment.IsDevelopment())
 
 app.UseStatusCodePages();
 app.UseStaticFiles();
+app.UseSession();
 
 // It's important to add this route before the default one. The routing system processes routes in the order they are listed.
 app.MapControllerRoute(
-    name: "pagination",
-    pattern: "Products/Page{page}",
-    defaults: new { Controller = "Product", action = "List" });
+    name: null,
+    pattern: "{category}/Page{page:int}",
+    defaults: new { controller = "Product", action = "List" });
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Product}/{action=List}/{id?}");
-
+    name: null,
+    pattern: "Page{page:int}",
+    defaults: new { controller = "Product", action = "List", page = 1 });
+app.MapControllerRoute(
+    name: null,
+    pattern: "{category}",
+    defaults: new {controller = "Product", action = "List", page = 1});
+app.MapControllerRoute(
+    name: null,
+    pattern: "",
+    defaults: new { controller = "Product", action = "List", page = 1 });
+app.MapControllerRoute(
+    name: null,
+    pattern: "{controller}/{action}/{id?}");
 
 SeedData.EnsurePopulated(app);
 app.Run();

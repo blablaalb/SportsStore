@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" asp-href-include="lib/bootstrap/css/*.css" />
+    <title>@ViewBag.Title</title>
+    <style>
+        .input-validation-error {
+            border-color: red;
+            background-color: #fee;
+        }
+    </style>
+    <script asp-src-include="lib/jquery/jquery.js"></script>
+    <script asp-src-include="lib/jquery-validate/jquery.validate.js"></script>
+    <script asp-src-include="lib/jquery-validate/jquery.validate.unobtrusive.js"></script>
+</head>
+<body class="panel panel-default">
+    <div class="panel.heading">
+        <h4>@ViewBag.Title</h4>
+    </div>
+    <div class="panel-body">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-success">@TempData["message"]</div>    
+        }
+        @RenderBody()
+    </div>
+</body>
+</html>
