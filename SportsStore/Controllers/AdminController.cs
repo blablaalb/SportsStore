@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 using System.Linq;
 
 namespace SportsStore.Controllers;
 
+[Authorize]
 public class AdminController(IProductRepository productRepository) : Controller
 {
     public ViewResult Index()

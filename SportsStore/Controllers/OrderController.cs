@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 
 namespace SportsStore.Controllers;
 
 public class OrderController(IOrderRepository orderRepository, Cart cart) : Controller
 {
+    [Authorize]
     public ViewResult List() => View(orderRepository.Orders.Where(o => !o.Shipped));
 
-    [HttpGet]
+    [HttpPost]
+    [Authorize]
     public IActionResult MarkShipped(int orderID)
     {
         Order order = orderRepository.Orders.FirstOrDefault(o => o.OrderID == orderID);

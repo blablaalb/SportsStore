@@ -19,9 +19,12 @@
     <script asp-src-include="lib/jquery-validate/jquery.validate.js"></script>
     <script asp-src-include="lib/jquery-validate/jquery.validate.unobtrusive.js"></script>
 </head>
-<body class="panel panel-default">
-    <div class="panel.heading">
-        <h4>@ViewBag.Title</h4>
+<body class="card">
+    <div class="card-header">
+        <h4>
+            @ViewBag.Title
+            <a class="btn btn-sm btn-primary float-start" asp-action="Logout" asp-controller="Account">Log Out</a>
+        </h4>
     </div>
     <div class="panel-body">
         @if (TempData["message"] != null)
